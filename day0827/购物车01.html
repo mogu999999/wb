@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type = "text/css">
+        td,th{
+            border:solid 1px;
+        }
+    </style>
+    <script type = "text/javascript" src = "../js/eventUtil01.js"></script>
+    <script type = "text/javascript">
+        window.onload = function(){
+            var tBody = document.getElementById("tBody");
+            var value1 = decodeURIComponent(document.cookie);
+            //alert(value1);
+            if(!value1){
+                return;
+            }
+            var valueList = value1.split("; ");
+            //alert (valueList);
+            //alert(valueList);
+            //debugger;
+            for (var i = 0; i<valueList.length;i++) {
+                var id = valueList[i].split("=")[0];
+                var name = Cookie.getCookieFromMulti(id, "name");
+                var price = Cookie.getCookieFromMulti(id, "price");
+                var num = Cookie.getCookieFromMulti(id, "num");
+                //tr
+                var tr = document.createElement("tr");
+                tr.id = "tr" + i;
+                tBody.appendChild(tr);
+                //nameTd
+                var nameTd = document.createElement("td");
+                nameTd.innerHTML = name;
+                tr.appendChild(nameTd);
+                //alert(nameTd.innerHTML);
+                //priceTd
+                var priceTd = document.createElement("td");
+                priceTd.innerHTML = price;
+                tr.appendChild(priceTd);
+                //reduce
+                var reduceTd = document.createElement("td");
+                reduceTd.id = "reduce" + i;
+                //alert(reduceTd.id);
+                reduceTd.innerHTML = "-";
+                tr.appendChild(reduceTd);
+                //reduce 点击事件
+                reduceTd.onclick = function (id,name,price,num) {
+
+                    return function(){
+                        //num = reduceTd.parentNode.children[3].innerHTML;
+                        if (num > 0) {
+                            var value = "name=" + name + "&price=" + price + "&num=" + (--num);
+                            this.parentNode.children[3].innerHTML = num;
+                            Cookie.setCookie(id, value);
+                        }
+                    }
+                }(id,name,price,num);
+
+                //num
+                var numTd = document.createElement("td");
+                numTd.innerHTML = num;
+                tr.appendChild(numTd);
+                //add
+                var addTd = document.createElement("td");
+                addTd.innerHTML = "+";
+                tr.appendChild(addTd);
+
+                addTd.onclick = function (id,name,price,num) {
+                    return function(){
+                        //var num = Cookie.getCookieFromMulti(id, "num");
+
+                            var value = "name=" + name + "&price=" + price + "&num=" + (++num);
+                            this.parentNode.children[3].innerHTML = num;
+                            Cookie.setCookie(id, value);
+
+                    }
+                }(id,name,price,num);
+                //remove
+                var removeTd = document.createElement("td");
+                removeTd.innerHTML = "删除";
+                tr.appendChild(removeTd);
+                removeTd.onclick = function (id) {
+                    return function(){
+                    Cookie.removeCookie(id);
+                    this.parentNode.innerHTML = "";
+                    }
+                }(id);
+            }
+
+
+
+//            for (var i = 0; i < valueList.length; i++) {
+//                var reduceInfor = document.getElementById("reduce"+i);
+//                //var oTr = document.getElementById("tr"+i);
+//                reduceInfor.onclick = function () {
+//                    alert(document.cookie);
+//                    var listId = this.parentNode;
+//                    //alert(listId.id);
+//                   var name = Cookie.getCookieFromMulti(id,"name");
+//                    var price = Cookie.getCookieFromMulti(id,"price");
+//                    var num = Cookie.getCookieFromMulti(id,"num");
+//                   //alert(name);alert(num);
+//                    if (num <= 0) {
+//                        return;
+//                    }
+//                    var value = "name=" + name + "&price=" + price + "&num=" + (--num);
+//                    Cookie.setCookie(id,value,30);
+//                }
+
+//            }
+        }
+    </script>
+</head>
+<body>
+<table>
+    <thead>
+    <th>商品名称</th>
+    <th>商品价格</th>
+    <th>减少</th>
+    <th>商品数量</th>
+    <th>增加</th>
+    <th>删除</th>
+    </thead>
+    <tbody id = "tBody">
+
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type = "text/javascript" src = "../js/eventUtil01.js"></script>
+    <script type = "text/javascript">
+        window.onload = function(){
+            var serviceData = [
+                {id: 123, name: "苹果", price: 5},
+                {id: 124, name: "橙子", price: 7},
+                {id: 125, name: "芒果", price: 9},
+               //{id: 126, name: "苹果", price: 10},
+                //{id: 127, name: "苹果", price: 25}
+            ];
+            var storage = document.getElementById("storage");
+            for (var i = 0;i <serviceData.length; i++){
+                //li
+                var li = document.createElement("li");
+                storage.appendChild(li);
+                li.id = "sno" + serviceData[i].id;
+                //名字
+                var nameSpan = document.createElement("span");
+                li.appendChild(nameSpan);
+                nameSpan.innerHTML = serviceData[i].name;
+                //价格
+                var priceSpan = document.createElement("span");
+                li.appendChild(priceSpan);
+                priceSpan.innerHTML = serviceData[i].price;
+                //a加入购物车Span
+                var aSpan = document.createElement("span");
+                li.appendChild(aSpan);
+                //加入购物车
+                var addToCar = document.createElement("a");
+                addToCar.href = "javascript:void(0)";
+                aSpan.appendChild(addToCar);
+                addToCar.innerHTML = "添加到购物车";
+            }
+            var addToCarList = document.getElementsByTagName("a");
+            for (var i = 0;i < addToCarList.length-1;i++){
+                addToCarList[i].onclick = function(){
+                    var oLi = this.parentNode.parentNode;
+                    var oLiid = oLi.id;
+                    var name = oLi.children[0].innerHTML;
+                    var price = oLi.children[1].innerHTML;
+                    var num = Cookie.getCookieFromMulti(oLiid,"num")||0;
+                    var value = "name=" + name +"&price=" + price + "&num=" + (++num);
+                    Cookie.setCookie(oLiid,value,30);
+                    //alert(decodeURIComponent(document.cookie));
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+<ul id = "storage">
+
+</ul>
+<a href="购物车01.html" target="_blank">查看购物车</a>
+</body>
+</body>
+</html>
